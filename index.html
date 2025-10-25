@@ -3,1021 +3,673 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم تطبيقاتنا</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyA9waN8a_0rnTclh_61zpMs0cNqwlx9ytY",
-            authDomain: "stlayeet2.firebaseapp.com",
-            projectId: "stlayeet2",
-            storageBucket: "stlayeet2.firebasestorage.app",
-            messagingSenderId: "65209725899",
-            appId: "1:65209725899:web:57c61f96f76c04b04bfc4e",
-            measurementId: "G-NYNM6TNMEP"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getFirestore(app);
-
-        window.firebaseApp = app;
-        window.firestoreDb = db;
-    </script>
-
+    <title>لوحة تحكم موقع عصام</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2563eb;
-            --secondary-color: #7c3aed;
-            --accent-color: #06b6d4;
-            --bg-color: #ffffff;
-            --card-bg: rgba(248, 250, 252, 0.9);
-            --text-color: #1e293b;
-            --text-secondary: #64748b;
-            --border-color: rgba(37, 99, 235, 0.2);
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --danger-color: #ef4444;
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
         }
-
-        .dark-mode {
-            --primary-color: #2563eb;
-            --secondary-color: #7c3aed;
-            --accent-color: #06b6d4;
-            --bg-color: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.8);
-            --text-color: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --border-color: rgba(37, 99, 235, 0.3);
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --danger-color: #ef4444;
-        }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Cairo', sans-serif;
-            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
         
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark-color);
             line-height: 1.6;
-            position: relative;
             min-height: 100vh;
+            padding: 20px;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px;
         }
         
         header {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 0.8rem 0;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .dark-mode header {
-            background: rgba(15, 23, 42, 0.95);
+            border-radius: 15px 15px 0 0;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0;
         }
         
         .header-content {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            gap: 10px;
+            align-items: center;
         }
         
         .logo {
             display: flex;
             align-items: center;
-            gap: 8px;
-            flex: 1;
         }
         
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 0.9rem;
-            box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
-            flex-shrink: 0;
-        }
-        
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            flex: 1;
-        }
-        
-        h1 {
-            font-size: 1.2rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .logo h1 {
+            font-size: 2rem;
+            margin-right: 15px;
+            color: var(--primary-color);
             font-weight: 700;
-            line-height: 1.2;
         }
         
-        .subtitle {
-            font-size: 0.8rem;
-            opacity: 0.8;
-            font-weight: 300;
-            color: var(--text-secondary);
+        .logo span {
+            color: var(--accent-color);
         }
         
-        .back-link {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 8px 16px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 0.8rem;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .back-link:hover {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
-        }
-        
-        .theme-toggle {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-            flex-shrink: 0;
-        }
-        
-        .theme-toggle:hover {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
-            transform: scale(1.05);
-        }
-        
-        .admin-section {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin: 2rem 0;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--border-color);
-        }
-        
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 1.2rem;
-            color: var(--text-color);
-            position: relative;
-            display: inline-block;
-        }
-        
-        .section-title::after {
-            content: "";
-            position: absolute;
-            bottom: -6px;
-            right: 0;
-            width: 60%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary-color), transparent);
-            border-radius: 3px;
-        }
-        
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-        
-        .tab-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-        }
-        
-        .tab-btn.active {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border-color: transparent;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-        
-        .form-group label {
-            margin-bottom: 6px;
-            font-weight: 500;
-            color: var(--text-color);
-            font-size: 0.9rem;
-        }
-        
-        .form-group input, .form-group select, .form-group textarea {
-            padding: 10px 12px;
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: var(--text-color);
-            transition: all 0.3s;
-        }
-        
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 8px rgba(37, 99, 235, 0.2);
-        }
-        
-        .form-group textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-        
-        /* تحسينات لقائمة الأيقونات */
-        .icon-select-wrapper {
-            position: relative;
-        }
-        
-        .icon-preview {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
+        .location {
             font-size: 1rem;
-        }
-        
-        .icon-select {
-            padding-right: 40px !important;
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
+            color: var(--secondary-color);
             font-weight: 600;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
+            background: rgba(52, 152, 219, 0.1);
+            padding: 8px 15px;
+            border-radius: 30px;
+            display: none; /* إخفاء موقع خط القاهرة */
         }
         
-        .btn:hover {
-            box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
-            transform: translateY(-2px);
+        main {
+            padding: 0;
         }
         
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .btn-danger {
-            background: linear-gradient(135deg, var(--danger-color), #dc2626);
-        }
-        
-        .btn-secondary {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-        }
-        
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 0.8rem;
-        }
-        
-        .message {
-            padding: 12px;
-            border-radius: 8px;
-            margin: 12px 0;
-            text-align: center;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-        
-        .success {
-            background: rgba(16, 185, 129, 0.2);
-            border: 1px solid rgba(16, 185, 129, 0.5);
-            color: var(--success-color);
-        }
-        
-        .error {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid rgba(239, 68, 68, 0.5);
-            color: var(--danger-color);
-        }
-        
-        .info {
-            background: rgba(37, 99, 235, 0.2);
-            border: 1px solid rgba(37, 99, 235, 0.5);
-            color: var(--primary-color);
-        }
-        
-        .apps-list {
-            margin-top: 1.5rem;
-        }
-        
-        .app-item {
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 0.8rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .app-info h3 {
-            color: var(--text-color);
-            margin-bottom: 0.4rem;
-            font-size: 1rem;
-        }
-        
-        .app-info p {
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            margin-bottom: 0.4rem;
-        }
-        
-        .app-category {
-            color: var(--primary-color);
-            font-weight: 700;
-            font-size: 0.8rem;
-        }
-        
-        .app-actions {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 1rem;
-            color: var(--primary-color);
-        }
-        
-        footer {
-            background: var(--card-bg);
-            text-align: center;
-            padding: 1.5rem 0;
-            margin-top: 3rem;
-            border-top: 1px solid var(--border-color);
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 0;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 0 0 15px 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
         }
         
         @media (max-width: 768px) {
-            .form-grid {
+            .dashboard {
                 grid-template-columns: 1fr;
             }
-            
-            .admin-section {
-                padding: 1rem;
+        }
+        
+        .left-panel {
+            background: rgba(52, 152, 219, 0.05);
+            padding: 2rem;
+            border-left: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .right-panel {
+            padding: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 1.8rem;
+            margin-bottom: 1.8rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--light-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card h2 i {
+            margin-left: 10px;
+            color: var(--secondary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.7rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--secondary-color);
+            color: white;
+            padding: 1rem 1.8rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn i {
+            margin-left: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--secondary-color);
+        }
+        
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+        
+        .btn-success {
+            background: var(--success-color);
+        }
+        
+        .btn-success:hover {
+            background: #27ae60;
+        }
+        
+        .btn-danger {
+            background: var(--accent-color);
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .btn-warning {
+            background: var(--warning-color);
+        }
+        
+        .btn-warning:hover {
+            background: #e67e22;
+        }
+        
+        .buttons-list {
+            list-style: none;
+        }
+        
+        .button-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem;
+            background: var(--light-color);
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            border-right: 5px solid var(--secondary-color);
+            transition: all 0.3s;
+        }
+        
+        .button-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .button-info {
+            flex-grow: 1;
+        }
+        
+        .button-name {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+        
+        .button-url {
+            display: none; /* إخفاء عرض الرابط */
+        }
+        
+        .button-actions {
+            display: flex;
+            gap: 0.7rem;
+        }
+        
+        .empty-message {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #7f8c8d;
+            font-style: italic;
+            background: rgba(236, 240, 241, 0.5);
+            border-radius: 10px;
+            border: 2px dashed #bdc3c7;
+        }
+        
+        .empty-message i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #bdc3c7;
+            display: block;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 1.2rem 1.8rem;
+            background: var(--success-color);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transform: translateX(150%);
+            transition: transform 0.4s;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+        
+        .notification i {
+            margin-left: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.error {
+            background: var(--accent-color);
+        }
+        
+        .notification.warning {
+            background: var(--warning-color);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        /* تأثيرات إضافية */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
             }
-            
-            h1 {
-                font-size: 1.1rem;
+            70% {
+                box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
             }
-            
-            .app-item {
-                flex-direction: column;
-                gap: 12px;
-                align-items: flex-start;
+            100% {
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
             }
-            
-            .app-actions {
-                align-self: flex-end;
-            }
-            
-            .header-content {
-                flex-wrap: wrap;
-            }
-            
-            .tabs {
-                flex-wrap: wrap;
-            }
+        }
+        
+        .button-date {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-top: 5px;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="tech-pattern"></div>
-    
-    <header>
-        <div class="container">
+    <div class="container">
+        <header>
             <div class="header-content">
                 <div class="logo">
-                    <div class="logo-icon">ت</div>
-                    <div class="logo-text">
-                        <h1>تطبيقاتنا</h1>
-                        <p class="subtitle">لوحة تحكم الإدارة</p>
-                    </div>
+                    <h1>لوحة تحكم موقع <span>عصام</span></h1>
                 </div>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <a href="index.html" class="back-link">
-                        <i class="fas fa-arrow-left"></i>
-                        العودة للموقع
-                    </a>
-                    <button class="theme-toggle" id="theme-toggle">
-                        <i class="fas fa-sun"></i>
-                    </button>
-                </div>
+                <!-- تم إزالة موقع خط القاهرة -->
             </div>
-        </div>
-    </header>
-    
-    <main class="container">
-        <section class="admin-section">
-            <h2 class="section-title">إدارة التطبيقات</h2>
-            
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="main-apps">التطبيقات الرئيسية</button>
-                <button class="tab-btn" data-tab="sub-apps">التطبيقات الفرعية</button>
-            </div>
-            
-            <div id="message-container">
-                <div class="message info">
-                    ⚠️ تأكد من تعديل قواعد الأمان في Firebase لتكون مفتوحة للقراءة والكتابة
-                </div>
-            </div>
-
-            <!-- تبويب التطبيقات الرئيسية -->
-            <div id="main-apps" class="tab-content active">
-                <h3>إضافة تطبيق رئيسي جديد</h3>
-                <form class="form-grid" id="add-main-app-form">
-                    <div class="form-group">
-                        <label for="main-app-name">اسم التطبيق الرئيسي</label>
-                        <input type="text" id="main-app-name" placeholder="أدخل اسم التطبيق الرئيسي" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="main-app-category">التصنيف</label>
-                        <select id="main-app-category" required>
-                            <option value="business">الأعمال</option>
-                            <option value="education">التعليم</option>
-                            <option value="health">الصحة</option>
-                            <option value="entertainment">الترفيه</option>
-                            <option value="social">التواصل</option>
-                            <option value="productivity">الانتاجية</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="main-app-icon">الأيقونة</label>
-                        <div class="icon-select-wrapper">
-                            <i class="icon-preview" id="main-app-icon-preview"></i>
-                            <select id="main-app-icon" class="icon-select" required>
-                                <option value="">اختر أيقونة</option>
-                                <!-- سيتم ملؤها بالجافاسكريبت -->
-                            </select>
+        </header>
+        
+        <main>
+            <div class="dashboard">
+                <div class="left-panel">
+                    <div class="card">
+                        <h2><i class="fas fa-plus-circle"></i> إضافة زر جديد</h2>
+                        <form id="addButtonForm">
+                            <div class="form-group">
+                                <label for="buttonName"><i class="fas fa-tag"></i> اسم الزر</label>
+                                <input type="text" id="buttonName" class="form-control" placeholder="أدخل اسم الزر" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="buttonUrl"><i class="fas fa-link"></i> رابط الزر</label>
+                                <input type="url" id="buttonUrl" class="form-control" placeholder="https://example.com" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary pulse">
+                                <i class="fas fa-plus"></i> إضافة الزر
+                            </button>
+                        </form>
+                        
+                        <div class="action-buttons">
+                            <button type="button" class="btn btn-warning" id="clearAll">
+                                <i class="fas fa-trash-alt"></i> مسح الكل
+                            </button>
+                            <button type="button" class="btn btn-success" id="exportButtons">
+                                <i class="fas fa-download"></i> تصدير
+                            </button>
                         </div>
                     </div>
-                    <div class="form-group full-width">
-                        <label for="main-app-description">وصف التطبيق</label>
-                        <textarea id="main-app-description" placeholder="أدخل وصف التطبيق"></textarea>
-                    </div>
-                    <button type="submit" class="btn full-width" id="add-main-app-btn">إضافة التطبيق الرئيسي</button>
-                </form>
-
-                <div class="apps-list">
-                    <h3>التطبيقات الرئيسية المضافة</h3>
-                    <div id="main-apps-list-container">
-                        <div class="loading">جاري تحميل التطبيقات...</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- تبويب التطبيقات الفرعية -->
-            <div id="sub-apps" class="tab-content">
-                <h3>إضافة تطبيق فرعي جديد</h3>
-                <form class="form-grid" id="add-sub-app-form">
-                    <div class="form-group">
-                        <label for="sub-app-name">اسم التطبيق الفرعي</label>
-                        <input type="text" id="sub-app-name" placeholder="أدخل اسم التطبيق الفرعي" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="sub-app-parent">التطبيق الرئيسي</label>
-                        <select id="sub-app-parent" required>
-                            <option value="">اختر التطبيق الرئيسي</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="sub-app-icon">الأيقونة</label>
-                        <div class="icon-select-wrapper">
-                            <i class="icon-preview" id="sub-app-icon-preview"></i>
-                            <select id="sub-app-icon" class="icon-select" required>
-                                <option value="">اختر أيقونة</option>
-                                <!-- سيتم ملؤها بالجافاسكريبت -->
-                            </select>
+                    
+                    <div class="stats">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalButtons">0</div>
+                            <div class="stat-label">إجمالي الأزرار</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="activeButtons">0</div>
+                            <div class="stat-label">الأزرار النشطة</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="todayButtons">0</div>
+                            <div class="stat-label">مضاف اليوم</div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="sub-app-url">رابط التطبيق (اختياري)</label>
-                        <input type="url" id="sub-app-url" placeholder="https://example.com">
-                    </div>
-                    <div class="form-group full-width">
-                        <label for="sub-app-description">وصف التطبيق</label>
-                        <textarea id="sub-app-description" placeholder="أدخل وصف التطبيق"></textarea>
-                    </div>
-                    <button type="submit" class="btn full-width" id="add-sub-app-btn">إضافة التطبيق الفرعي</button>
-                </form>
-
-                <div class="apps-list">
-                    <h3>التطبيقات الفرعية المضافة</h3>
-                    <div id="sub-apps-list-container">
-                        <div class="loading">جاري تحميل التطبيقات...</div>
+                </div>
+                
+                <div class="right-panel">
+                    <div class="card">
+                        <h2><i class="fas fa-list"></i> الأزرار المضافة</h2>
+                        <div id="buttonsContainer">
+                            <div class="empty-message">
+                                <i class="fas fa-inbox"></i>
+                                لا توجد أزرار مضافة بعد. قم بإضافة زر جديد.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
+        </main>
+    </div>
     
-    <footer>
-        <div class="container">
-            <p>© 2025 تطبيقاتنا - جميع الحقوق محفوظة</p>
-        </div>
-    </footer>
-
-    <script type="module">
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = themeToggle.querySelector('i');
-        const messageContainer = document.getElementById('message-container');
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
-        
-        // نماذج الإضافة
-        const addMainAppForm = document.getElementById('add-main-app-form');
-        const addSubAppForm = document.getElementById('add-sub-app-form');
-        const addMainAppBtn = document.getElementById('add-main-app-btn');
-        const addSubAppBtn = document.getElementById('add-sub-app-btn');
-        
-        // حاويات القوائم
-        const mainAppsListContainer = document.getElementById('main-apps-list-container');
-        const subAppsListContainer = document.getElementById('sub-apps-list-container');
-        const subAppParentSelect = document.getElementById('sub-app-parent');
-
-        // عناصر الأيقونات
-        const mainAppIconSelect = document.getElementById('main-app-icon');
-        const subAppIconSelect = document.getElementById('sub-app-icon');
-        const mainAppIconPreview = document.getElementById('main-app-icon-preview');
-        const subAppIconPreview = document.getElementById('sub-app-icon-preview');
-
-        // قائمة الأيقونات Font Awesome
-        const fontAwesomeIcons = [
-            // الأعمال
-            'fas fa-briefcase', 'fas fa-chart-line', 'fas fa-file-invoice', 'fas fa-users-cog',
-            'fas fa-warehouse', 'fas fa-handshake', 'fas fa-money-bill-wave', 'fas fa-building',
-            'fas fa-calculator', 'fas fa-chart-bar', 'fas fa-coins', 'fas fa-credit-card',
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText"></span>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addButtonForm = document.getElementById('addButtonForm');
+            const buttonsContainer = document.getElementById('buttonsContainer');
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            const clearAllBtn = document.getElementById('clearAll');
+            const exportButtonsBtn = document.getElementById('exportButtons');
+            const totalButtonsEl = document.getElementById('totalButtons');
+            const activeButtonsEl = document.getElementById('activeButtons');
+            const todayButtonsEl = document.getElementById('todayButtons');
             
-            // التعليم
-            'fas fa-graduation-cap', 'fas fa-book', 'fas fa-chalkboard-teacher', 'fas fa-language',
-            'fas fa-calculator', 'fas fa-flask', 'fas fa-pencil-alt', 'fas fa-school',
-            'fas fa-user-graduate', 'fas fa-brain', 'fas fa-microscope', 'fas fa-atom',
+            // تحميل الأزرار من localStorage عند بدء التحميل
+            loadButtons();
+            updateStats();
             
-            // الصحة
-            'fas fa-heartbeat', 'fas fa-heart', 'fas fa-pills', 'fas fa-running',
-            'fas fa-utensils', 'fas fa-bed', 'fas fa-stethoscope', 'fas fa-hospital',
-            'fas fa-user-md', 'fas fa-ambulance', 'fas fa-prescription', 'fas fa-weight',
-            
-            // الترفيه
-            'fas fa-gamepad', 'fas fa-music', 'fas fa-film', 'fas fa-book-open',
-            'fas fa-podcast', 'fas fa-video', 'fas fa-tv', 'fas fa-headphones',
-            'fas fa-dice', 'fas fa-theater-masks', 'fas fa-palette', 'fas fa-camera',
-            
-            // التواصل
-            'fas fa-users', 'fas fa-comments', 'fas fa-video', 'fas fa-share-alt',
-            'fas fa-bullhorn', 'fas fa-calendar-alt', 'fas fa-user-friends', 'fas fa-envelope',
-            'fas fa-phone', 'fas fa-comment-dots', 'fas fa-rss', 'fas fa-hashtag',
-            
-            // الانتاجية
-            'fas fa-tasks', 'fas fa-calendar', 'fas fa-sticky-note', 'fas fa-clock',
-            'fas fa-file-alt', 'fas fa-brain', 'fas fa-check-circle', 'fas fa-list-alt',
-            'fas fa-chart-pie', 'fas fa-target', 'fas fa-flag', 'fas fa-award',
-            
-            // عام
-            'fas fa-home', 'fas fa-cog', 'fas fa-search', 'fas fa-bell',
-            'fas fa-star', 'fas fa-plus', 'fas fa-minus', 'fas fa-times',
-            'fas fa-check', 'fas fa-info-circle', 'fas fa-exclamation-triangle', 'fas fa-question-circle'
-        ];
-
-        // تهيئة قوائم الأيقونات
-        function initializeIconSelects() {
-            // إضافة الأيقونات إلى القائمة المنسدلة للتطبيقات الرئيسية
-            fontAwesomeIcons.forEach(icon => {
-                const option1 = document.createElement('option');
-                option1.value = icon;
-                option1.textContent = icon.replace('fas fa-', '').replace(/-/g, ' ');
-                mainAppIconSelect.appendChild(option1);
-
-                const option2 = document.createElement('option');
-                option2.value = icon;
-                option2.textContent = icon.replace('fas fa-', '').replace(/-/g, ' ');
-                subAppIconSelect.appendChild(option2);
-            });
-
-            // إضافة مستمعي الأحداث لتحديث المعاينة
-            mainAppIconSelect.addEventListener('change', function() {
-                updateIconPreview(this.value, mainAppIconPreview);
-            });
-
-            subAppIconSelect.addEventListener('change', function() {
-                updateIconPreview(this.value, subAppIconPreview);
-            });
-        }
-
-        // تحديث معاينة الأيقونة
-        function updateIconPreview(iconClass, previewElement) {
-            if (iconClass) {
-                previewElement.className = `icon-preview ${iconClass}`;
-                previewElement.style.display = 'block';
-            } else {
-                previewElement.style.display = 'none';
-            }
-        }
-
-        // تبديل الوضع النهاري/الليلي
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            if (document.body.classList.contains('dark-mode')) {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-            } else {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            }
-        });
-
-        // إدارة التبويبات
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const tabId = this.getAttribute('data-tab');
+            // إضافة زر جديد
+            addButtonForm.addEventListener('submit', function(e) {
+                e.preventDefault();
                 
-                // إزالة النشط من جميع الأزرار والمحتويات
-                tabBtns.forEach(b => b.classList.remove('active'));
-                tabContents.forEach(content => content.classList.remove('active'));
+                const buttonName = document.getElementById('buttonName').value.trim();
+                const buttonUrl = document.getElementById('buttonUrl').value.trim();
                 
-                // إضافة النشط للعناصر المختارة
-                this.classList.add('active');
-                document.getElementById(tabId).classList.add('active');
-                
-                // تحديث قائمة التطبيقات الرئيسية عند التبديل للتبويب الفرعي
-                if (tabId === 'sub-apps') {
-                    loadMainAppsForSelect();
+                if (buttonName && buttonUrl) {
+                    // التأكد من أن الرابط يبدأ بـ http:// أو https://
+                    const fullUrl = buttonUrl.startsWith('http') ? buttonUrl : `https://${buttonUrl}`;
+                    
+                    addButton(buttonName, fullUrl);
+                    addButtonForm.reset();
+                    showNotification('تم إضافة الزر بنجاح!');
+                } else {
+                    showNotification('يرجى ملء جميع الحقول!', 'error');
                 }
             });
-        });
-
-        // إضافة تطبيق رئيسي
-        addMainAppForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
             
-            const name = document.getElementById('main-app-name').value.trim();
-            const category = document.getElementById('main-app-category').value;
-            const icon = document.getElementById('main-app-icon').value;
-            const description = document.getElementById('main-app-description').value.trim();
-
-            if (!name || !category || !icon) {
-                showMessage('يرجى ملء جميع الحقول المطلوبة', 'error');
-                return;
-            }
-
-            addMainAppBtn.disabled = true;
-            addMainAppBtn.textContent = 'جاري الإضافة...';
-
-            try {
-                const db = getFirestore();
-                
-                await addDoc(collection(db, "main_apps"), {
-                    name: name,
-                    category: category,
-                    icon: icon,
-                    description: description,
-                    createdAt: new Date().toISOString()
-                });
-
-                showMessage('✅ تم إضافة التطبيق الرئيسي بنجاح!', 'success');
-                addMainAppForm.reset();
-                updateIconPreview('', mainAppIconPreview);
-                loadMainAppsList();
-                
-            } catch (error) {
-                console.error("Error adding main app:", error);
-                showMessage('❌ حدث خطأ أثناء إضافة التطبيق', 'error');
-            } finally {
-                addMainAppBtn.disabled = false;
-                addMainAppBtn.textContent = 'إضافة التطبيق الرئيسي';
-            }
-        });
-
-        // إضافة تطبيق فرعي
-        addSubAppForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
+            // مسح جميع الأزرار
+            clearAllBtn.addEventListener('click', function() {
+                if (confirm('هل أنت متأكد من رغبتك في مسح جميع الأزرار؟')) {
+                    clearAllButtons();
+                    showNotification('تم مسح جميع الأزرار بنجاح!', 'warning');
+                }
+            });
             
-            const name = document.getElementById('sub-app-name').value.trim();
-            const parent = document.getElementById('sub-app-parent').value;
-            const icon = document.getElementById('sub-app-icon').value;
-            const url = document.getElementById('sub-app-url').value.trim();
-            const description = document.getElementById('sub-app-description').value.trim();
-
-            if (!name || !parent || !icon) {
-                showMessage('يرجى ملء جميع الحقول المطلوبة', 'error');
-                return;
-            }
-
-            addSubAppBtn.disabled = true;
-            addSubAppBtn.textContent = 'جاري الإضافة...';
-
-            try {
-                const db = getFirestore();
+            // تصدير الأزرار
+            exportButtonsBtn.addEventListener('click', function() {
+                exportButtons();
+            });
+            
+            // دالة إضافة زر
+            function addButton(name, url) {
+                let buttons = getButtonsFromStorage();
                 
-                await addDoc(collection(db, "sub_apps"), {
+                const newButton = {
+                    id: Date.now(),
                     name: name,
-                    parent: parent,
-                    icon: icon,
                     url: url,
-                    description: description,
-                    createdAt: new Date().toISOString()
-                });
-
-                showMessage('✅ تم إضافة التطبيق الفرعي بنجاح!', 'success');
-                addSubAppForm.reset();
-                updateIconPreview('', subAppIconPreview);
-                loadSubAppsList();
+                    date: new Date().toISOString(),
+                    active: true
+                };
                 
-            } catch (error) {
-                console.error("Error adding sub app:", error);
-                showMessage('❌ حدث خطأ أثناء إضافة التطبيق', 'error');
-            } finally {
-                addSubAppBtn.disabled = false;
-                addSubAppBtn.textContent = 'إضافة التطبيق الفرعي';
+                buttons.push(newButton);
+                saveButtonsToStorage(buttons);
+                displayButtons();
+                updateStats();
             }
-        });
-
-        // جلب التطبيقات الرئيسية للقائمة المنسدلة
-        async function loadMainAppsForSelect() {
-            try {
-                const db = getFirestore();
-                const querySnapshot = await getDocs(collection(db, "main_apps"));
-                const mainApps = [];
-                
-                querySnapshot.forEach((doc) => {
-                    mainApps.push({ id: doc.id, ...doc.data() });
-                });
-
-                subAppParentSelect.innerHTML = '<option value="">اختر التطبيق الرئيسي</option>';
-                mainApps.forEach(app => {
-                    const option = document.createElement('option');
-                    option.value = app.id;
-                    option.textContent = app.name;
-                    subAppParentSelect.appendChild(option);
-                });
-                
-            } catch (error) {
-                console.error("Error loading main apps for select:", error);
-            }
-        }
-
-        // جلب قائمة التطبيقات الرئيسية
-        async function loadMainAppsList() {
-            try {
-                mainAppsListContainer.innerHTML = '<div class="loading">جاري تحميل التطبيقات...</div>';
-                
-                const db = getFirestore();
-                const querySnapshot = await getDocs(collection(db, "main_apps"));
-                const mainApps = [];
-                
-                querySnapshot.forEach((doc) => {
-                    mainApps.push({ id: doc.id, ...doc.data() });
-                });
-                
-                displayMainAppsList(mainApps);
-            } catch (error) {
-                console.error("Error loading main apps:", error);
-                mainAppsListContainer.innerHTML = '<div class="error">حدث خطأ في تحميل التطبيقات</div>';
-            }
-        }
-
-        // عرض قائمة التطبيقات الرئيسية
-        function displayMainAppsList(apps) {
-            if (apps.length === 0) {
-                mainAppsListContainer.innerHTML = '<div class="message">لا توجد تطبيقات رئيسية مضافة</div>';
-                return;
-            }
-
-            // ترتيب التطبيقات من الأحدث إلى الأقدم
-            apps.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-            mainAppsListContainer.innerHTML = '';
             
-            apps.forEach(app => {
-                const appItem = document.createElement('div');
-                appItem.className = 'app-item';
-                
-                appItem.innerHTML = `
-                    <div class="app-info" style="flex: 1;">
-                        <h3><i class="${app.icon}"></i> ${app.name}</h3>
-                        <p>${app.description || 'لا يوجد وصف'}</p>
-                        <div class="app-category">${app.category} | ${new Date(app.createdAt).toLocaleDateString('ar-EG')}</div>
-                        <div><small>الأيقونة: ${app.icon}</small></div>
-                    </div>
-                    <div class="app-actions">
-                        <button class="btn btn-danger btn-sm" onclick="deleteMainApp('${app.id}')">حذف</button>
-                    </div>
-                `;
-                
-                mainAppsListContainer.appendChild(appItem);
-            });
-        }
-
-        // جلب قائمة التطبيقات الفرعية
-        async function loadSubAppsList() {
-            try {
-                subAppsListContainer.innerHTML = '<div class="loading">جاري تحميل التطبيقات...</div>';
-                
-                const db = getFirestore();
-                const querySnapshot = await getDocs(collection(db, "sub_apps"));
-                const subApps = [];
-                
-                querySnapshot.forEach((doc) => {
-                    subApps.push({ id: doc.id, ...doc.data() });
-                });
-                
-                displaySubAppsList(subApps);
-            } catch (error) {
-                console.error("Error loading sub apps:", error);
-                subAppsListContainer.innerHTML = '<div class="error">حدث خطأ في تحميل التطبيقات</div>';
+            // دالة حذف زر
+            function deleteButton(id) {
+                let buttons = getButtonsFromStorage();
+                buttons = buttons.filter(button => button.id !== id);
+                saveButtonsToStorage(buttons);
+                displayButtons();
+                updateStats();
+                showNotification('تم حذف الزر بنجاح!', 'warning');
             }
-        }
-
-        // عرض قائمة التطبيقات الفرعية
-        function displaySubAppsList(apps) {
-            if (apps.length === 0) {
-                subAppsListContainer.innerHTML = '<div class="message">لا توجد تطبيقات فرعية مضافة</div>';
-                return;
-            }
-
-            // ترتيب التطبيقات من الأحدث إلى الأقدم
-            apps.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-            subAppsListContainer.innerHTML = '';
             
-            apps.forEach(app => {
-                const appItem = document.createElement('div');
-                appItem.className = 'app-item';
-                
-                appItem.innerHTML = `
-                    <div class="app-info" style="flex: 1;">
-                        <h3><i class="${app.icon}"></i> ${app.name}</h3>
-                        <p>${app.description || 'لا يوجد وصف'}</p>
-                        <div class="app-category">${app.parent} | ${new Date(app.createdAt).toLocaleDateString('ar-EG')}</div>
-                        <div><small>الأيقونة: ${app.icon} | الرابط: ${app.url || 'لا يوجد رابط'}</small></div>
-                    </div>
-                    <div class="app-actions">
-                        <button class="btn btn-danger btn-sm" onclick="deleteSubApp('${app.id}')">حذف</button>
-                    </div>
-                `;
-                
-                subAppsListContainer.appendChild(appItem);
-            });
-        }
-
-        // حذف تطبيق رئيسي
-        async function deleteMainApp(appId) {
-            if (confirm('هل أنت متأكد من حذف هذا التطبيق الرئيسي؟ سيتم حذف جميع التطبيقات الفرعية المرتبطة به.')) {
-                try {
-                    const db = getFirestore();
-                    await deleteDoc(doc(db, "main_apps", appId));
-                    
-                    showMessage('تم حذف التطبيق الرئيسي بنجاح!', 'success');
-                    loadMainAppsList();
-                } catch (error) {
-                    console.error("Error deleting main app:", error);
-                    showMessage('حدث خطأ أثناء حذف التطبيق', 'error');
-                }
-            }
-        }
-
-        // حذف تطبيق فرعي
-        async function deleteSubApp(appId) {
-            if (confirm('هل أنت متأكد من حذف هذا التطبيق الفرعي؟')) {
-                try {
-                    const db = getFirestore();
-                    await deleteDoc(doc(db, "sub_apps", appId));
-                    
-                    showMessage('تم حذف التطبيق الفرعي بنجاح!', 'success');
-                    loadSubAppsList();
-                } catch (error) {
-                    console.error("Error deleting sub app:", error);
-                    showMessage('حدث خطأ أثناء حذف التطبيق', 'error');
-                }
-            }
-        }
-
-        // عرض الرسائل
-        function showMessage(message, type) {
-            // إزالة الرسائل القديمة
-            const oldMessages = messageContainer.querySelectorAll('.message:not(.info)');
-            oldMessages.forEach(msg => msg.remove());
-            
-            // إضافة الرسالة الجديدة
-            if (type !== 'info') {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${type}`;
-                messageDiv.innerHTML = message;
-                messageContainer.appendChild(messageDiv);
-                
-                // إزالة الرسالة بعد 5 ثواني
-                setTimeout(() => {
-                    if (messageDiv.parentElement) {
-                        messageDiv.remove();
+            // دالة تبديل حالة الزر (نشط/غير نشط)
+            function toggleButton(id) {
+                let buttons = getButtonsFromStorage();
+                buttons = buttons.map(button => {
+                    if (button.id === id) {
+                        button.active = !button.active;
                     }
-                }, 5000);
+                    return button;
+                });
+                saveButtonsToStorage(buttons);
+                displayButtons();
+                updateStats();
+                showNotification('تم تغيير حالة الزر!');
             }
-        }
-
-        // جعل دوال الحذف متاحة globally
-        window.deleteMainApp = deleteMainApp;
-        window.deleteSubApp = deleteSubApp;
-
-        // تحميل البيانات عند فتح الصفحة
-        window.addEventListener('load', () => {
-            initializeIconSelects();
-            loadMainAppsList();
-            loadSubAppsList();
-            loadMainAppsForSelect();
+            
+            // دالة مسح جميع الأزرار
+            function clearAllButtons() {
+                saveButtonsToStorage([]);
+                displayButtons();
+                updateStats();
+            }
+            
+            // دالة تصدير الأزرار
+            function exportButtons() {
+                const buttons = getButtonsFromStorage();
+                if (buttons.length === 0) {
+                    showNotification('لا توجد أزرار لتصديرها!', 'error');
+                    return;
+                }
+                
+                const dataStr = JSON.stringify(buttons, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = 'أزرار موقع عصام.json';
+                link.click();
+                
+                showNotification('تم تصدير الأزرار بنجاح!');
+            }
+            
+            // دالة عرض الأزرار
+            function displayButtons() {
+                const buttons = getButtonsFromStorage();
+                
+                if (buttons.length === 0) {
+                    buttonsContainer.innerHTML = `
+                        <div class="empty-message">
+                            <i class="fas fa-inbox"></i>
+                            لا توجد أزرار مضافة بعد. قم بإضافة زر جديد.
+                        </div>`;
+                    return;
+                }
+                
+                buttonsContainer.innerHTML = '';
+                const buttonsList = document.createElement('ul');
+                buttonsList.className = 'buttons-list';
+                
+                // ترتيب الأزرار من الأحدث إلى الأقدم
+                buttons.sort((a, b) => b.id - a.id);
+                
+                buttons.forEach(button => {
+                    const buttonItem = document.createElement('li');
+                    buttonItem.className = 'button-item';
+                    if (!button.active) {
+                        buttonItem.style.opacity = '0.7';
+                        buttonItem.style.borderRightColor = '#95a5a6';
+                    }
+                    
+                    buttonItem.innerHTML = `
+                        <div class="button-info">
+                            <div class="button-name">${button.name} ${!button.active ? '<span style="color:#e74c3c;font-size:0.8rem;">(غير نشط)</span>' : ''}</div>
+                            <!-- تم إخفاء عرض الرابط -->
+                            <div class="button-date">
+                                ${new Date(button.date).toLocaleDateString('ar-EG')}
+                            </div>
+                        </div>
+                        <div class="button-actions">
+                            <a href="${button.url}" target="_blank" class="btn btn-primary">
+                                <i class="fas fa-external-link-alt"></i> زيارة
+                            </a>
+                            <button class="btn ${button.active ? 'btn-warning' : 'btn-success'}" onclick="toggleButton(${button.id})">
+                                <i class="fas ${button.active ? 'fa-eye-slash' : 'fa-eye'}"></i> ${button.active ? 'إخفاء' : 'إظهار'}
+                            </button>
+                            <button class="btn btn-danger" onclick="deleteButton(${button.id})">
+                                <i class="fas fa-trash"></i> حذف
+                            </button>
+                        </div>
+                    `;
+                    
+                    buttonsList.appendChild(buttonItem);
+                });
+                
+                buttonsContainer.appendChild(buttonsList);
+            }
+            
+            // دالة تحديث الإحصائيات
+            function updateStats() {
+                const buttons = getButtonsFromStorage();
+                const today = new Date().toDateString();
+                
+                totalButtonsEl.textContent = buttons.length;
+                activeButtonsEl.textContent = buttons.filter(btn => btn.active).length;
+                todayButtonsEl.textContent = buttons.filter(btn => 
+                    new Date(btn.date).toDateString() === today
+                ).length;
+            }
+            
+            // دالة تحميل الأزرار من localStorage
+            function loadButtons() {
+                displayButtons();
+            }
+            
+            // دالة الحصول على الأزرار من localStorage
+            function getButtonsFromStorage() {
+                return JSON.parse(localStorage.getItem('buttons')) || [];
+            }
+            
+            // دالة حفظ الأزرار في localStorage
+            function saveButtonsToStorage(buttons) {
+                localStorage.setItem('buttons', JSON.stringify(buttons));
+            }
+            
+            // دالة عرض الإشعارات
+            function showNotification(message, type = 'success') {
+                notificationText.textContent = message;
+                notification.className = 'notification';
+                
+                // إعداد الأيقونة بناءً على نوع الإشعار
+                let iconClass = 'fas fa-check-circle';
+                if (type === 'error') {
+                    iconClass = 'fas fa-exclamation-circle';
+                } else if (type === 'warning') {
+                    iconClass = 'fas fa-exclamation-triangle';
+                }
+                
+                notification.innerHTML = `<i class="${iconClass}"></i><span id="notificationText">${message}</span>`;
+                notification.classList.add(type);
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+            
+            // جعل الدوال متاحة عالمياً
+            window.deleteButton = deleteButton;
+            window.toggleButton = toggleButton;
         });
     </script>
 </body>
